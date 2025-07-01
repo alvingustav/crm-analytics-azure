@@ -1,0 +1,17 @@
+{
+    "name": "CRM Analytics Azure",
+    "image": "mcr.microsoft.com/vscode/devcontainers/python:3.11",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-python.python",
+                "ms-toolsai.jupyter",
+                "ms-vscode.azure-account",
+                "ms-azuretools.vscode-azureappservice"
+            ]
+        }
+    },
+    "forwardPorts": [8501],
+    "postCreateCommand": "pip install -r requirements.txt",
+    "remoteUser": "vscode"
+}
