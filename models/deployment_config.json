@@ -1,0 +1,56 @@
+{
+  "model_info": {
+    "best_model_name": "Weighted Ensemble",
+    "model_performance": 0.8430080859748378,
+    "training_features": [
+      "SeniorCitizen",
+      "tenure",
+      "MonthlyCharges",
+      "TotalCharges",
+      "ServiceAdoptionScore",
+      "CLV",
+      "AvgChargesPerTenure",
+      "DigitalEngagement",
+      "gender_encoded",
+      "Partner_encoded",
+      "Dependents_encoded",
+      "InternetService_encoded",
+      "Contract_encoded",
+      "PaperlessBilling_encoded",
+      "PaymentMethod_encoded"
+    ],
+    "model_version": "1.0.0"
+  },
+  "preprocessing": {
+    "categorical_features": [
+      "gender",
+      "Partner",
+      "Dependents",
+      "InternetService",
+      "Contract",
+      "PaperlessBilling",
+      "PaymentMethod"
+    ],
+    "numerical_features": [
+      "SeniorCitizen",
+      "tenure",
+      "MonthlyCharges",
+      "TotalCharges",
+      "ServiceAdoptionScore",
+      "CLV",
+      "AvgChargesPerTenure",
+      "DigitalEngagement"
+    ],
+    "scaling_required": true
+  },
+  "segmentation": {
+    "n_clusters": 4,
+    "segment_features": [
+      "tenure",
+      "MonthlyCharges",
+      "TotalCharges",
+      "ServiceAdoptionScore",
+      "DigitalEngagement"
+    ]
+  }
+}
