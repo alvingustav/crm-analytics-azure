@@ -1,0 +1,13 @@
+streamlit
+pandas
+numpy
+plotly
+scikit-learn
+joblib
+openai
+azure-identity
+azure-keyvault-secrets
+seaborn
+matplotlib
+requests
+python-dotenv
