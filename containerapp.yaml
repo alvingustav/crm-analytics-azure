@@ -1,0 +1,30 @@
+location: japaneast
+name: crm-analytics-platform
+resourceGroup: crm-analytics-rg
+type: Microsoft.App/containerApps
+properties:
+  environmentId: /subscriptions/{subscription-id}/resourceGroups/crm-analytics-rg/providers/Microsoft.App/managedEnvironments/crm-analytics-env
+  configuration:
+    ingress:
+      external: true
+      targetPort: 8501
+      transport: http
+      allowInsecure: true
+    secrets:
+      - name: azure-openai-key
+        value: your-azure-openai-key
+  template:
+    containers:
+      - image: crmanalyticsacr.azurecr.io/crm-analytics:latest
+        name: crm-analytics
+        resources:
+          cpu: 1.0
+          memory: 2.0Gi
+        env:
+          - name: AZURE_OPENAI_ENDPOINT
+            value: https://your-openai-service.openai.azure.com/
+          - name: AZURE_OPENAI_KEY
+            secretRef: azure-openai-key
+    scale:
+      minReplicas: 1
+      maxReplicas: 3
