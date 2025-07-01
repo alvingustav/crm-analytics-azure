@@ -1,4 +1,4 @@
-name: Deploy to Azure Container Apps
+name: Deploy CRM Analytics to Azure Container Apps
 
 on:
   push:
@@ -29,12 +29,10 @@ jobs:
         docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/crm-analytics:${{ github.sha }}
         docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/crm-analytics:${{ github.sha }}
     
-    - name: Deploy to Azure Container Apps
+    - name: Deploy to Azure Container Apps using YAML
       uses: azure/container-apps-deploy-action@v1
       with:
-        containerAppName: crm-analytics-platform
-        resourceGroup: ${{ secrets.AZURE_RG }}
+        yamlConfigPath: containerapp.yaml  # 👈 REFERENCE FILE YAML
         imageToDeploy: ${{ secrets.REGISTRY_LOGIN_SERVER }}/crm-analytics:${{ github.sha }}
-        containerAppEnvironment: ${{ secrets.CONTAINERAPPS_ENVIRONMENT }}
-        targetPort: 8501
-        ingress: external
+        resourceGroup: crm-analytics-rg
+        containerAppName: crm-analytics-platform
