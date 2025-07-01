@@ -1,29 +1,40 @@
-name: Deploy to Azure App Service
+name: Deploy to Azure Container Apps
 
 on:
   push:
     branches: [ main ]
 
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
     
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Login to Azure
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
     
-    - name: Set up Python
-      uses: actions/setup-python@v4
+    - name: Login to Azure Container Registry
+      uses: azure/docker-login@v1
       with:
-        python-version: '3.11'
-        
-    - name: Install dependencies
+        login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
+        username: ${{ secrets.REGISTRY_USERNAME }}
+        password: ${{ secrets.REGISTRY_PASSWORD }}
+    
+    - name: Build and push container image
       run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-        
-    - name: Deploy to Azure Web App
-      uses: azure/webapps-deploy@v2
+        docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/crm-analytics:${{ github.sha }}
+        docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/crm-analytics:${{ github.sha }}
+    
+    - name: Deploy to Azure Container Apps
+      uses: azure/container-apps-deploy-action@v1
       with:
-        app-name: 'your-app-service-name'
-        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-        startup-command: 'python -m streamlit run app.py --server.port 8000 --server.address 0.0.0.0'
+        containerAppName: crm-analytics-platform
+        resourceGroup: ${{ secrets.AZURE_RG }}
+        imageToDeploy: ${{ secrets.REGISTRY_LOGIN_SERVER }}/crm-analytics:${{ github.sha }}
+        containerAppEnvironment: ${{ secrets.CONTAINERAPPS_ENVIRONMENT }}
+        targetPort: 8501
+        ingress: external
