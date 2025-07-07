@@ -113,9 +113,7 @@ crm-analytics-azure/
    '''
 git clone https://github.com/yourusername/crm-analytics-azure.git
 cd crm-analytics-azure
-'''
-
-text
+  '''
 
 2. **Install dependencies**
 pip install -r requirements.txt
