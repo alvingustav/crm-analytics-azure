@@ -1,292 +1,236 @@
-🏢 CRM Analytics Platform
-Aplikasi web analytics CRM berbasis Streamlit yang menyediakan analisis customer relationship management yang komprehensif. Platform ini menggunakan machine learning untuk prediksi churn, segmentasi pelanggan, dan analisis customer lifetime value (CLV), serta terintegrasi dengan Azure OpenAI untuk insights berbasis AI.
+# CRM Analytics Platform
 
-🎯 Fitur Utama
-🎯 Customer Segmentation: Analisis demografis, behavioral, dan value-based segmentation
+A modern, cloud-ready Customer Relationship Management (CRM) analytics application built with **Streamlit**, **scikit-learn**, and **Azure OpenAI**. This platform enables business users and analysts to perform customer segmentation, churn prediction, CLV analysis, campaign insights, and real-time dashboarding, all deployable to Azure Container Apps.
 
-📊 Churn Prediction: Model ML untuk prediksi risiko churn dengan scoring system
+---
 
-📈 Real-time Dashboard: Monitoring KPI dan metrics secara real-time
+## 🚀 Features
 
-💰 CLV Analysis: Analisis dan prediksi Customer Lifetime Value
+- **Customer Segmentation**
+  - Demographic, behavioral, and value-based segmentation
+  - Predict customer segment from manual input or dataset
 
-🎪 Campaign Analysis: Optimasi marketing campaign dan product analysis
+- **Churn Analysis & Prediction**
+  - Individual churn risk scoring with ML model
+  - Churn risk explanations and retention recommendations
 
-🤖 AI-Powered Insights: Rekomendasi strategis menggunakan Azure OpenAI
+- **Customer Lifetime Value (CLV)**
+  - CLV calculation and predictive analytics
+  - High-value customer identification
 
-🛠️ Teknologi yang Digunakan
-Frontend: Streamlit, Plotly, HTML/CSS
+- **Campaign & Product Analysis**
+  - Service adoption and upsell/cross-sell opportunity analysis
+  - Campaign ROI and targeting simulation
 
-Backend: Python, Pandas, NumPy
+- **Interactive Dashboard**
+  - Real-time KPI monitoring and customer health scoring
+  - Exportable analytics and AI-powered insights
 
-Machine Learning: Scikit-learn, Random Forest, Gradient Boosting
+- **Azure OpenAI Integration**
+  - LLM-generated business insights and recommendations
 
-AI Integration: Azure OpenAI GPT-3.5/GPT-4
+---
 
-Deployment: Azure Container Apps, Docker
+## 🗂️ Project Structure
 
-Data Processing: Feature Engineering, Data Preprocessing
-
-📊 Struktur Dataset
-Platform ini menggunakan dataset telco customer churn dengan kolom:
+crm-analytics-azure/
+├── app.py
+├── Dockerfile
+├── containerapp.yaml
+├── requirements.txt
+├── README.md
+├── .devcontainer/
+│ └── devcontainer.json
+├── .github/
+│ └── workflows/
+│ └── azure-deploy.yml
+├── .streamlit/
+│ ├── config.toml
+│ └── secrets.toml
+├── models/
+│ ├── churn_prediction_model.pkl
+│ ├── customer_segmentation_model.pkl
+│ ├── feature_scaler.pkl
+│ ├── segment_scaler.pkl
+│ ├── label_encoders.pkl
+│ └── deployment_config.json
+├── data/
+│ └── churn.csv
+├── pages/
+│ ├── 1_🎯_Customer_Segmentation.py
+│ ├── 2_📊_Churn_Prediction.py
+│ ├── 3_📈_Dashboard.py
+│ ├── 4_💰_CLV_Analysis.py
+│ └── 5_🎪_Campaign_Analysis.py
+├── utils/
+│ ├── init.py
+│ ├── data_loader.py
+│ ├── model_utils.py
+│ └── azure_openai.py
+└── startup.sh
 
 text
-customerID, gender, SeniorCitizen, Partner, Dependents, tenure, 
-PhoneService, MultipleLines, InternetService, OnlineSecurity, 
-OnlineBackup, DeviceProtection, TechSupport, StreamingTV, 
-StreamingMovies, Contract, PaperlessBilling, PaymentMethod, 
-MonthlyCharges, TotalCharges, Churn
-🚀 Cara Menjalankan Aplikasi Secara Lokal
-Clone repository:
 
-bash
+---
+
+## ⚡ Quick Start (Local)
+
+1. **Clone the repository**
 git clone https://github.com/yourusername/crm-analytics-azure.git
 cd crm-analytics-azure
-Buat virtual environment:
 
-bash
-python -m venv venv
-source venv/bin/activate  # Untuk Linux/Mac
-# atau
-venv\Scripts\activate  # Untuk Windows
-Install dependensi:
-
-bash
-pip install -r requirements.txt
-Konfigurasi Azure OpenAI:
-
-bash
-mkdir .streamlit
-cat > .streamlit/secrets.toml << EOF
-AZURE_OPENAI_ENDPOINT = "https://your-openai-service.openai.azure.com/"
-AZURE_OPENAI_KEY = "your-openai-api-key"
-AZURE_OPENAI_DEPLOYMENT = "gpt-35-turbo"
-EOF
-Letakkan dataset dan model:
-
-bash
-# Pastikan file churn.csv ada di folder data/
-# Pastikan model artifacts ada di folder models/
-Jalankan aplikasi:
-
-bash
-streamlit run app.py
-Buka browser dan akses http://localhost:8501
-
-☁️ Deployment di Azure Container Apps
-Buat resource group:
-
-bash
-az group create --name crm-analytics-rg --location eastus
-Buat Azure Container Registry:
-
-bash
-az acr create \
-  --resource-group crm-analytics-rg \
-  --name crmanalyticacr \
-  --sku Basic \
-  --admin-enabled true
-Buat Container Apps environment:
-
-bash
-az containerapp env create \
-  --name crm-analytics-env \
-  --resource-group crm-analytics-rg \
-  --location eastus
-Build dan deploy:
-
-bash
-# Build dengan unique tag
-TIMESTAMP=$(date +%Y%m%d%H%M%S)
-az acr build --registry crmanalyticacr --image crm-analytic:$TIMESTAMP .
-
-# Deploy ke Container Apps
-az containerapp create \
-  --name crm-analytic-platform \
-  --resource-group crm-analytics-rg \
-  --environment crm-analytics-env \
-  --image crmanalyticacr.azurecr.io/crm-analytic:$TIMESTAMP \
-  --target-port 8501 \
-  --ingress external \
-  --cpu 1.0 \
-  --memory 2.0Gi
-Dapatkan URL aplikasi:
-
-bash
-az containerapp show \
-  --name crm-analytic-platform \
-  --resource-group crm-analytics-rg \
-  --query "properties.configuration.ingress.fqdn" \
-  --output tsv
-🐳 Deployment menggunakan GitHub Codespaces
-Fork repository ini ke GitHub Anda
-
-Buka di Codespaces dari GitHub repository
-
-Login ke Azure:
-
-bash
-az login --use-device-code
-Ikuti langkah deployment di atas
-
-Set environment variables di Azure Portal untuk Azure OpenAI
-
-📁 Struktur Aplikasi
 text
-crm-analytics-azure/
-├── app.py                              # Main Streamlit application
-├── pages/                              # Multi-page structure
-│   ├── 1_🎯_Customer_Segmentation.py   # Customer segmentation analysis
-│   ├── 2_📊_Churn_Prediction.py        # Churn prediction & risk analysis
-│   ├── 3_📈_Dashboard.py               # Real-time dashboard
-│   ├── 4_💰_CLV_Analysis.py            # Customer lifetime value analysis
-│   └── 5_🎪_Campaign_Analysis.py       # Marketing campaign analysis
-├── utils/                              # Utility modules
-│   ├── data_loader.py                  # Data loading functions
-│   ├── model_utils.py                  # ML model utilities
-│   └── azure_openai.py                 # Azure OpenAI integration
-├── models/                             # Pre-trained models
-│   ├── churn_prediction_model.pkl      # Churn prediction model
-│   ├── customer_segmentation_model.pkl # Segmentation model
-│   └── *.pkl                          # Other model artifacts
-├── data/                               # Dataset
-│   └── churn.csv                       # Customer churn dataset
-├── Dockerfile                          # Container configuration
-├── requirements.txt                    # Python dependencies
-└── .streamlit/                         # Streamlit configuration
-    ├── config.toml                     # App configuration
-    └── secrets.toml                    # API keys and secrets
-🤖 Model Machine Learning
-Churn Prediction
-Algorithm: Weighted Random Forest, Gradient Boosting, Logistic Regression
 
-Features: 15 engineered features including CLV, service adoption score
+2. **Install dependencies**
+pip install -r requirements.txt
 
-Performance: AUC Score > 0.85, F1 Score > 0.75
+text
 
-Customer Segmentation
-Algorithm: K-Means Clustering
+3. **Set up Streamlit secrets**
+- Edit `.streamlit/secrets.toml` with your Azure OpenAI endpoint, key, and deployment name.
 
-Segments: 4 customer segments (Price-Sensitive, High-Value, Digital Adopters, Premium)
+4. **Run the app locally**
+streamlit run app.py
 
-Features: Tenure, charges, service adoption, digital engagement
+text
 
-CLV Prediction
-Algorithm: Polynomial Regression
+---
 
-Metrics: R² Score, MAPE, MAE
+## 🐳 Docker Usage
 
-🔧 Konfigurasi Environment
-Tambahkan environment variables berikut di Azure Container Apps:
+1. **Build Docker image**
+docker build -t crm-analytics .
 
-bash
-AZURE_OPENAI_ENDPOINT=https://your-openai-service.openai.azure.com/
-AZURE_OPENAI_KEY=your-api-key
-AZURE_OPENAI_DEPLOYMENT=gpt-35-turbo
-📈 Fitur Analytics
-Dashboard Real-time
-KPI Monitoring: Total customers, churn rate, revenue metrics
+text
 
-Risk Assessment: High-risk customer identification
+2. **Run container**
+docker run -p 8501:8501 --env-file .env crm-analytics
 
-Performance Tracking: Campaign effectiveness dan ROI analysis
+text
 
-Customer Segmentation
-Demographic Analysis: Gender, age group, family status
+---
 
-Behavioral Patterns: Service usage dan tenure analysis
+## ☁️ Azure Container Apps Deployment
 
-Value Segmentation: CLV quartiles dan revenue contribution
+### 1. Build & Push Image to Azure Container Registry (ACR)
+az acr build --registry <acr-name> --image crm-analytics:latest .
 
-Churn Prediction
-Individual Risk Scoring: Customer-level churn probability
+text
 
-Bulk Risk Analysis: Portfolio-wide risk assessment
+### 2. Deploy to Azure Container Apps
+az containerapp create
+--name crm-analytics-platform
+--resource-group <resource-group>
+--environment <containerapp-env>
+--image <acr-name>.azurecr.io/crm-analytics:latest
+--target-port 8501
+--ingress external
+--cpu 1.0
+--memory 2.0Gi
 
-Retention Recommendations: AI-powered retention strategies
+text
 
-CLV Analysis
-Lifetime Value Calculation: Current dan predicted CLV
+### 3. Update Container App (Redeploy)
+az containerapp update
+--name crm-analytics-platform
+--resource-group <resource-group>
+--image <acr-name>.azurecr.io/crm-analytics:latest
 
-Value Optimization: High-value customer identification
+text
 
-Revenue Forecasting: CLV prediction models
+### 4. Get Public URL
+az containerapp show
+--name crm-analytics-platform
+--resource-group <resource-group>
+--query "properties.configuration.ingress.fqdn"
+--output tsv
 
-Campaign Analysis
-Service Promotion: Cross-selling dan upselling opportunities
+text
 
-Contract Optimization: Migration scenarios dan revenue impact
+---
 
-ROI Calculator: Campaign performance projections
+## 🔑 Azure OpenAI Integration
 
-🔒 Keamanan dan Compliance
-Data Privacy: No PII stored in logs
+- Set your Azure OpenAI credentials in `.streamlit/secrets.toml`:
+AZURE_OPENAI_ENDPOINT = "https://<your-openai-resource>.openai.azure.com/"
+AZURE_OPENAI_KEY = "<your-azure-openai-key>"
+AZURE_OPENAI_DEPLOYMENT = "<your-deployment-name>"
 
-API Security: Rate limiting dan input validation
+text
 
-Container Security: Non-root user, minimal base image
+---
 
-Secrets Management: Azure Key Vault integration
+## 🧑‍💻 Development in GitHub Codespaces
 
-🐛 Troubleshooting
-Common Issues
-Issue: Service adoption rates showing 0%
+- Open the repo in Codespaces.
+- Use the provided `.devcontainer/devcontainer.json` for a ready-to-use environment with Docker and Azure CLI.
+- All ports and dependencies are pre-configured for rapid development and cloud deployment.
 
-bash
-# Solution: Check data format and column values
-# Verify 'Yes'/'No' values in service columns
-Issue: Model prediction errors
+---
 
-bash
-# Solution: Ensure feature count matches (15 features)
-# Check preprocessing pipeline consistency
-Issue: Azure OpenAI connection failed
+## 📝 Dataset
 
-bash
-# Solution: Verify endpoint and API key
-# Check deployment name configuration
-📊 Performance Metrics
-Metric	Target	Current
-Response Time	< 2 seconds	1.5s avg
-Throughput	100+ users	150 users
-Availability	99.9%	99.95%
-Model Accuracy	AUC > 0.85	0.87
-🚀 Roadmap
- Real-time streaming data integration
+- Place your customer data as `data/churn.csv` (Telco churn format).
+- Example columns: `customerID, gender, SeniorCitizen, Partner, Dependents, tenure, PhoneService, ...`
 
- Advanced ML models (Deep Learning, AutoML)
+---
 
- Multi-tenant architecture
+## 🛠️ Model Artifacts
 
- Mobile app companion
+- Pre-trained models and scalers are stored in `models/`:
+- `churn_prediction_model.pkl`
+- `customer_segmentation_model.pkl`
+- `feature_scaler.pkl`
+- `segment_scaler.pkl`
+- `label_encoders.pkl`
+- `deployment_config.json`
 
- API Gateway integration
+---
 
- Advanced security features
+## 🧩 Customization
 
-🤝 Kontribusi
-Kontribusi selalu disambut baik! Silakan buat issue atau pull request jika Anda memiliki saran atau perbaikan.
+- **Add new pages**: Place Streamlit files in `/pages/`
+- **Add new models**: Retrain and save to `/models/`
+- **Extend data pipeline**: Edit `utils/model_utils.py` and `utils/data_loader.py`
 
-Fork repository
+---
 
-Create feature branch: git checkout -b feature/amazing-feature
+## 🏆 Best Practices
 
-Commit changes: git commit -m 'Add amazing feature'
+- Always use the same feature order and preprocessing at inference as during model training.
+- Use version tags for Docker images to avoid cache issues.
+- Use managed identity or ACR credentials for secure container registry access.
+- Keep your Azure OpenAI deployment name consistent and verify in Azure Portal.
 
-Push to branch: git push origin feature/amazing-feature
+---
 
-Open Pull Request
+## 📄 License
 
-📄 Lisensi
-This project is licensed under the MIT License - see the LICENSE file for details.
+MIT License
 
-📞 Support
-Issues: GitHub Issues
+---
 
-Documentation: Wiki
+## 🙋 FAQ
 
-Email: support@your-domain.com
+**Q: Why do I get "X has 16 features, but StandardScaler is expecting 15 features"?**  
+A: Ensure your feature engineering and order matches exactly between training and inference. Use the provided preprocessing functions.
 
-Built with ❤️ using Azure Container Apps, Streamlit, and Machine Learning
+**Q: How do I update the app after code/model changes?**  
+A: Rebuild the Docker image, push to ACR, and run `az containerapp update ...` as shown above.
 
-Last updated: January 2025
+**Q: Why does AI insights fail with deployment error?**  
+A: Check that your Azure OpenAI deployment name matches exactly (case-sensitive) and is available in your resource/region.
+
+---
+
+## 👨‍💻 Authors
+
+- CRM Analytics Team
+
+---
+
+## 🌐 References
+
+- [Azure Container Apps Documentation](https://learn.microsoft.com/en-us/azure/container-apps/)
+- [Streamlit Documentation](https://docs.streamlit.io/)
+- [Azure OpenAI Service](https://learn.microsoft.com/en-us/azure/ai-services/openai/)
