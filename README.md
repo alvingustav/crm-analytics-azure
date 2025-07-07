@@ -34,7 +34,9 @@ A modern, cloud-ready Customer Relationship Management (CRM) analytics applicati
 ## 🗂️ Project Structure
 
 crm-analytics-azure/
+
 ├── app.py
+
 ├── Dockerfile
 ├── containerapp.yaml
 ├── requirements.txt
