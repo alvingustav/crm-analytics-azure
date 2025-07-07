@@ -38,48 +38,82 @@ crm-analytics-azure/
 ├── app.py
 
 ├── Dockerfile
+
 ├── containerapp.yaml
+
 ├── requirements.txt
+
 ├── README.md
+
 ├── .devcontainer/
+
 │ └── devcontainer.json
+
 ├── .github/
+
 │ └── workflows/
+
 │ └── azure-deploy.yml
+
 ├── .streamlit/
+
 │ ├── config.toml
+
 │ └── secrets.toml
+
 ├── models/
+
 │ ├── churn_prediction_model.pkl
+
 │ ├── customer_segmentation_model.pkl
+
 │ ├── feature_scaler.pkl
+
 │ ├── segment_scaler.pkl
+
 │ ├── label_encoders.pkl
+
 │ └── deployment_config.json
+
 ├── data/
+
 │ └── churn.csv
+
 ├── pages/
+
 │ ├── 1_🎯_Customer_Segmentation.py
+
 │ ├── 2_📊_Churn_Prediction.py
+
 │ ├── 3_📈_Dashboard.py
+
 │ ├── 4_💰_CLV_Analysis.py
+
 │ └── 5_🎪_Campaign_Analysis.py
+
 ├── utils/
+
 │ ├── init.py
+
 │ ├── data_loader.py
+
 │ ├── model_utils.py
+
 │ └── azure_openai.py
+
 └── startup.sh
 
-text
+
 
 ---
 
 ## ⚡ Quick Start (Local)
 
 1. **Clone the repository**
+   '''
 git clone https://github.com/yourusername/crm-analytics-azure.git
 cd crm-analytics-azure
+'''
 
 text
 
